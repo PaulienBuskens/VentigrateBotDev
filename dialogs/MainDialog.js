@@ -100,6 +100,7 @@ class MainDialog extends LogoutDialog {
                     break;
                 case 'myEmail':
                     await OAuthHelpers.myEmail(step.context,tokenResponse);
+                    await context.sendActivity("email");
                     break;
                 default:
                     await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);

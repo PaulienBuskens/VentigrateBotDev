@@ -60,17 +60,17 @@ class OAuthHelpers {
      */
     static async myEmail(context, tokenResponse) {
         if (!context) {
-            throw new Error('OAuthHelpers.listMe(): `context` cannot be undefined.');
+            throw new Error('OAuthHelpers.myEmail(): `context` cannot be undefined.');
         }
         if (!tokenResponse) {
-            throw new Error('OAuthHelpers.listMe(): `tokenResponse` cannot be undefined.');
+            throw new Error('OAuthHelpers.myEmail(): `tokenResponse` cannot be undefined.');
         }
 
         // Pull in the data from Microsoft Graph.
         const client = new SimpleGraphClient(tokenResponse.token);
         const me = await client.getMe();
 
-        await context.sendActivity(`You are ${ me.mail }.`);
+        await context.sendActivity(`Your email is ${ me.mail }.`);
     }
 
 
