@@ -128,8 +128,8 @@ class MainDialog extends LogoutDialog {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
         }
 
-        //return await step.endDialog();
-        return await step.commandStep();
+        return await step.endDialog();
+        
     }
 }
 

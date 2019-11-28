@@ -8,7 +8,7 @@ class AuthBot extends DialogBot {
             const membersAdded = context.activity.membersAdded;
             for (let cnt = 0; cnt < membersAdded.length; cnt++) {
                 if (membersAdded[cnt].id !== context.activity.recipient.id) {
-                    await context.sendActivity('Welcome to Authentication Bot on MSGraph. Type anything to get logged in. Type \'logout\' to sign-out.');
+                    await context.sendActivity('Welcome to the ventigrateBot. Type anything to get started in. Type \'logout\' to sign-out.');
                 }
             }
 
