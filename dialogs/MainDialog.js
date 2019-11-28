@@ -98,7 +98,7 @@ class MainDialog extends LogoutDialog {
                 case 'recent':
                     await OAuthHelpers.listRecentMail(step.context, tokenResponse);
                     break;
-                case 'myEmail':
+                case 'myemail':
                     await OAuthHelpers.myEmail(step.context,tokenResponse);
                     await context.sendActivity("email");
                     break;
