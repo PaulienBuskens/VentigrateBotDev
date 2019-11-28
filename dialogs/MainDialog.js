@@ -120,7 +120,7 @@ class MainDialog extends LogoutDialog {
                             break;
                         default:
                             await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
-                    }
+                        }
                 }
 
             }
@@ -128,8 +128,8 @@ class MainDialog extends LogoutDialog {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
         }
 
-        return await step.endDialog();
-        
+        //return await step.endDialog();
+        return await step.loginStep();
     }
 }
 
