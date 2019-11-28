@@ -100,18 +100,6 @@ class SimpleGraphClient {
     }
 
     /**
-     * Collects information about the user in the bot.
-     */
-    async GetDocs() {
-        return await this.graphClient
-            .api('/me')
-            .select('drive/recent')
-            .get().then((res) => {
-                return res;
-            });
-    }
-
-    /**
      * Collects the user's manager in the bot.
      */
     async getManager() {
