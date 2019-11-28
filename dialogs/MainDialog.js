@@ -1,6 +1,7 @@
 const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { LogoutDialog } = require('./logoutDialog');
 const { OAuthHelpers } = require('../oAuthHelpers');
+const { GiphyBot } = require('../giphyBot');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 const OAUTH_PROMPT = 'oAuthPrompt';
@@ -101,6 +102,9 @@ class MainDialog extends LogoutDialog {
                 case 'myemail':
                     await OAuthHelpers.myEmail(step.context,tokenResponse);
                     await context.sendActivity("email");
+                    break;
+                case '@giphy':
+                    await  GiphyBot.getGiphy(context,next);
                     break;
                 default:
                     await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
