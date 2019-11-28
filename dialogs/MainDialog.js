@@ -2,6 +2,7 @@ const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, Wate
 const { LogoutDialog } = require('./logoutDialog');
 const { OAuthHelpers } = require('../oAuthHelpers');
 const { GiphyBot } = require('../giphyBot');
+const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 const OAUTH_PROMPT = 'oAuthPrompt';
