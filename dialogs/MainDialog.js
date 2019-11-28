@@ -57,7 +57,7 @@ class MainDialog extends LogoutDialog {
         const tokenResponse = step.result;
         if (tokenResponse) {
             await step.context.sendActivity('You are now logged in.');
-            return await step.prompt(TEXT_PROMPT, { prompt: 'Would you like to do? });
+            return await step.prompt(TEXT_PROMPT, { prompt: 'Would you like to do? (type \'me\', \'send <EMAIL>\' or \'recent\')' });
         }
         await step.context.sendActivity('Login was not successful please try again.');
         return await step.endDialog();
