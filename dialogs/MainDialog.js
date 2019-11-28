@@ -79,16 +79,15 @@ class MainDialog extends LogoutDialog {
 
     async processStep(step) {
         if (step.result) {
-            // We do not need to store the token in the bot. When we need the token we can
-            // send another prompt. If the token is valid the user will not need to log back in.
-            // The token will be available in the Result property of the task.
             const tokenResponse = step.result;
 
             // If we have the token use the user is authenticated so we may use it to make API calls.
             if (tokenResponse && tokenResponse.token) {
-                const parts = (step.values.command || '').toLowerCase().split(' ');
+                //const parts = (step.values.command || '').toLowerCase().split(' ');
+               // const parts = (step.values.command || '').toLowerCase().split(' ');
 
-                const command = parts[0];
+               // const command = parts[0];
+               const command = step.values.command;
 
                 if(command.includes('@giphy')){
                     var number = Math.floor(Math.random() * 19 ) + 1;
@@ -125,7 +124,6 @@ class MainDialog extends LogoutDialog {
                         }
                 }
 
-                
             }
         } else {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
