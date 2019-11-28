@@ -89,26 +89,42 @@ class MainDialog extends LogoutDialog {
 
                 const command = parts[0];
 
-                switch (command) {
-                case 'me':
-                    await OAuthHelpers.listMe(step.context, tokenResponse);
-                    break;
-                case 'send':
-                    await OAuthHelpers.sendMail(step.context, tokenResponse, parts[1]);
-                    break;
-                case 'recent':
-                    await OAuthHelpers.listRecentMail(step.context, tokenResponse);
-                    break;
-                case 'myemail':
-                    await OAuthHelpers.myEmail(step.context,tokenResponse);
-                    await context.sendActivity("email");
-                    break;
-                case '@giphy':
-                    await  GiphyBot.getGiphy(context,next);
-                    break;
-                default:
-                    await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
+                if(command.includes('@giphy')){
+                    var number = Math.floor(Math.random() * 19 ) + 1;
+                    var inputKeyword = input.replace("@giphy", "");
+
+                    const response = await fetch('http://api.giphy.com/v1/gifs/search?q="'+inputKeyword+'"&api_key=Kp5L1GFE5JwIpDrsrKtMxc3ATb8syTV4&limit=21');
+                    const myJson = await response.json();
+
+                    var id = myJson.data[number].id;
+
+                    var card = CardFactory.heroCard(
+                        '',
+                        ['https://media0.giphy.com/media/'+id+'/200.webp'],
+                    );
+
+                    const message = MessageFactory.attachment(card);
+                    await step.context.sendActivity(message);
+                }else{
+                    switch (command) {
+                        case 'me':
+                            await OAuthHelpers.listMe(step.context, tokenResponse);
+                            break;
+                        case 'send':
+                            await OAuthHelpers.sendMail(step.context, tokenResponse, parts[1]);
+                            break;
+                        case 'recent':
+                            await OAuthHelpers.listRecentMail(step.context, tokenResponse);
+                            break;
+                        case 'myemail':
+                            await OAuthHelpers.myEmail(step.context,tokenResponse);
+                            break;
+                        default:
+                            await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
+                        }
                 }
+
+                
             }
         } else {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
