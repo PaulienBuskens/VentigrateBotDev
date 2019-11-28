@@ -73,6 +73,7 @@ class OAuthHelpers {
         await context.sendActivity(`Your email is ${ me.mail }.`);
     }
 
+
     /**
      * Lists the user's collected email.
      * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
