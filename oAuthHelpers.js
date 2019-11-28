@@ -73,6 +73,29 @@ class OAuthHelpers {
         await context.sendActivity(`Your email is ${ me.mail }.`);
     }
 
+    /**
+     * Displays last viewed documents in the bot.
+     * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
+     * @param {TokenResponse} tokenResponse A response that includes a user token.
+     */
+    static async getLastDocs(context, tokenResponse) {
+        if (!context) {
+            throw new Error('OAuthHelpers.getLastDocs(): `context` cannot be undefined.');
+        }
+        if (!tokenResponse) {
+            throw new Error('OAuthHelpers.getLastDocs(): `tokenResponse` cannot be undefined.');
+        }
+
+        // Pull in the data from Microsoft Graph.
+        const client = new SimpleGraphClient(tokenResponse.token);
+        const me = await client.GetDocs();
+
+        await context.sendActivity(`Your last viewed docs ${ me.Drive }.`);
+    }
+    
+    
+    
+
 
     /**
      * Lists the user's collected email.
