@@ -68,7 +68,7 @@ class OAuthHelpers {
 
         // Pull in the data from Microsoft Graph.
         const client = new SimpleGraphClient(tokenResponse.token);
-        const me = await client.getMe();
+        const me = await client.getEmail();
 
         await context.sendActivity(`Your email is ${ me.mail }.`);
     }

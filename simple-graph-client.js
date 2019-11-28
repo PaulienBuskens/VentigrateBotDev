@@ -88,6 +88,18 @@ class SimpleGraphClient {
     }
 
     /**
+     * Collects information about the user in the bot.
+     */
+    async getEmail() {
+        return await this.graphClient
+            .api('/me')
+            .select('mail')
+            .get().then((res) => {
+                return res;
+            });
+    }
+
+    /**
      * Collects the user's manager in the bot.
      */
     async getManager() {
