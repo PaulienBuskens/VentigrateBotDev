@@ -92,7 +92,7 @@ class MainDialog extends LogoutDialog {
 
                 if(command.includes('@giphy')){
                     var number = Math.floor(Math.random() * 19 ) + 1;
-                    var inputKeyword = input.replace("@giphy", "");
+                    var inputKeyword = command.replace("@giphy", "");
 
                     const response = await fetch('http://api.giphy.com/v1/gifs/search?q="'+inputKeyword+'"&api_key=Kp5L1GFE5JwIpDrsrKtMxc3ATb8syTV4&limit=21');
                     const myJson = await response.json();
