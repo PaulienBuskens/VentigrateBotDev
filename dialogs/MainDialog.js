@@ -129,7 +129,7 @@ class MainDialog extends LogoutDialog {
         }
 
         //return await step.endDialog();
-        return await step.loginStep();
+        return await step.commandStep();
     }
 }
 
