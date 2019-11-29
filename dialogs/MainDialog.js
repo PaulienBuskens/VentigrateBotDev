@@ -22,7 +22,6 @@ class MainDialog extends LogoutDialog {
             .addDialog(new TextPrompt(TEXT_PROMPT))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
                 this.promptStep.bind(this),
-                this.checkStep.bind(this),
                 this.loginStep.bind(this),
                 this.commandStep.bind(this),
                 this.processStep.bind(this)
@@ -50,11 +49,6 @@ class MainDialog extends LogoutDialog {
 
     async promptStep(step) {
         return step.beginDialog(OAUTH_PROMPT);
-    }
-
-    async checkStep(step){
-        await step.sendActivity("checkstep");
-        return next();
     }
 
     async loginStep(step) {
