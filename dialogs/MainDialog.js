@@ -107,7 +107,6 @@ class MainDialog extends LogoutDialog {
                             await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
                         }
                 }
-
             }
         } else {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');

@@ -11,7 +11,6 @@ class AuthBot extends DialogBot {
                     await context.sendActivity('Welcome to the VentigrateBot. Type anything to get started.');
                 }
             }
-
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
