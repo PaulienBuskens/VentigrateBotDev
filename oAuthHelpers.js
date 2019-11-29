@@ -8,30 +8,6 @@ const { SimpleGraphClient } = require('./simple-graph-client');
  * https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference
  */
 class OAuthHelpers {
-    /**
-     * Enable the user to send an email via the bot.
-     * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
-     * @param {TokenResponse} tokenResponse A response that includes a user token.
-     * @param {string} emailAddress The email address of the recipient.
-     */
-    static async sendMail(context, tokenResponse, emailAddress) {
-        if (!context) {
-            throw new Error('OAuthHelpers.sendMail(): `context` cannot be undefined.');
-        }
-        if (!tokenResponse) {
-            throw new Error('OAuthHelpers.sendMail(): `tokenResponse` cannot be undefined.');
-        }
-
-        const client = new SimpleGraphClient(tokenResponse.token);
-        const me = await client.getMe();
-
-        await client.sendMail(
-            emailAddress,
-            'Message from a bot!',
-            `Hi there! I had this message sent from a bot. - Your friend, ${ me.displayName }`
-        );
-        await context.sendActivity(`I sent a message to ${ emailAddress } from your account.`);
-    }
 
     /**
      * Displays information about the user in the bot.
