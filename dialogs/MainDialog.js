@@ -37,6 +37,7 @@ class MainDialog extends LogoutDialog {
      * @param {*} accessor
      */
     async run(turnContext, accessor) {
+        await context.sendActivity("runstep");
         const dialogSet = new DialogSet(accessor);
         dialogSet.add(this);
 
