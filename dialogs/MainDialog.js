@@ -49,7 +49,7 @@ class MainDialog extends LogoutDialog {
 
     async test(context, next){
         await context.sendActivity("testmethode");
-        return next();
+        
     }
 
     async promptStep(step) {
