@@ -1,13 +1,6 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 const restify = require('restify');
 const path = require('path');
-
-// Import required bot services.
-// See https://aka.ms/bot-services to learn more about the different parts of a bot.
 const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } = require('botbuilder');
-
 const { AuthBot } = require('./bots/authBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
@@ -37,7 +30,6 @@ adapter.onTurnError = async (context, error) => {
         'TurnError'
     );
 
-    // Send a message to the user
     await context.sendActivity('The bot encounted an error or bug.');
     await context.sendActivity('To continue to run this bot, please fix the bot source code.');
     // Clear out state
