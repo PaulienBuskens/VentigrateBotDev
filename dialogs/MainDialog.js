@@ -118,5 +118,6 @@ class MainDialog extends LogoutDialog {
     return await step.endDialog();
         
 }
+}
 
 module.exports.MainDialog = MainDialog;
