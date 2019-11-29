@@ -6,15 +6,14 @@ class AuthBot extends DialogBot {
 
         this.onMessage(async (context, next) => {
 
-            var input = context.activity.text;
-            var number = Math.floor(Math.random() * 19 ) + 1;
-            var inputKeyword = input.replace("@giphy", "");
+            if(context.activity.text.includes("@giphy")){
+                var input = context.activity.text;
+                var number = Math.floor(Math.random() * 19 ) + 1;
+                var inputKeyword = input.replace("@giphy", "");
 
 
             const response = await fetch('http://api.giphy.com/v1/gifs/search?q="'+inputKeyword+'"&api_key=Kp5L1GFE5JwIpDrsrKtMxc3ATb8syTV4&limit=21');
             const myJson = await response.json();
-            //console.log(JSON.stringify(myJson));
-            //console.log(myJson);
             console.log(myJson.data[number].url);
 
             var id = myJson.data[number].id;
@@ -45,19 +44,23 @@ class AuthBot extends DialogBot {
             }
         
             await next();
-        });
+            } else {
+                this.onMembersAdded(async (context, next) => {
+                    const membersAdded = context.activity.membersAdded;
+                    for (let cnt = 0; cnt < membersAdded.length; cnt++) {
+                        if (membersAdded[cnt].id !== context.activity.recipient.id) {
+                            await context.sendActivity('Welcome to the VentigrateBot. Type anything to get started.');
+                        }
+                    }
 
-        this.onMembersAdded(async (context, next) => {
-            const membersAdded = context.activity.membersAdded;
-            for (let cnt = 0; cnt < membersAdded.length; cnt++) {
-                if (membersAdded[cnt].id !== context.activity.recipient.id) {
-                    await context.sendActivity('Welcome to the VentigrateBot. Type anything to get started.');
-                }
+                    // By calling next() you ensure that the next BotHandler is run.
+                    await next();
+                });
             }
-
-            // By calling next() you ensure that the next BotHandler is run.
-            await next();
+            
         });
+
+        
 
         this.onTokenResponseEvent(async (context, next) => {
             console.log('Running dialog with Token Response Event Activity.');
