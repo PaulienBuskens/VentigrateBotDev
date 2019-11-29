@@ -65,15 +65,6 @@ class MainDialog extends LogoutDialog {
 
     async commandStep(step) {
         step.values.command = step.result;
-
-        // Call the prompt again because we need the token. The reasons for this are:
-        // 1. If the user is already logged in we do not need to store the token locally in the bot and worry
-        // about refreshing it. We can always just call the prompt again to get the token.
-        // 2. We never know how long it will take a user to respond. By the time the
-        // user responds the token may have expired. The user would then be prompted to login again.
-        //
-        // There is no reason to store the token locally in the bot because we can always just call
-        // the OAuth prompt to get the token or get a new token if needed.
         return await step.beginDialog(OAUTH_PROMPT);
     }
 
@@ -122,7 +113,8 @@ class MainDialog extends LogoutDialog {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
         }
 
-        return await step.endDialog();
+        //return await step.endDialog();
+        return await step.processStep();
     }
 }
 
