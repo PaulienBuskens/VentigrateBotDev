@@ -48,7 +48,6 @@ class MainDialog extends LogoutDialog {
     }
 
     async promptStep(step) {
-        await step.context.sendActivity("test before auth");
         return step.beginDialog(OAUTH_PROMPT);
     }
 
