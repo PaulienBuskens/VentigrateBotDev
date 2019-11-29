@@ -48,8 +48,23 @@ class MainDialog extends LogoutDialog {
     }
 
     async test(context, next){
-        await context.sendActivity("testmethode");
         
+        var command = context.activity.text;
+        var number = Math.floor(Math.random() * 19 ) + 1;
+        var inputKeyword = command.replace("@giphy", "");
+
+        const response = await fetch('http://api.giphy.com/v1/gifs/search?q="'+inputKeyword+'"&api_key=Kp5L1GFE5JwIpDrsrKtMxc3ATb8syTV4&limit=21');
+        const myJson = await response.json();
+
+        var id = myJson.data[number].id;
+
+        var card = CardFactory.heroCard(
+            '',
+            ['https://media0.giphy.com/media/'+id+'/200.webp'],
+        );
+
+        const message = MessageFactory.attachment(card);
+        await context.sendActivity(message);
     }
 
     async promptStep(step) {
