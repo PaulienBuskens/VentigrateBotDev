@@ -111,13 +111,12 @@ class MainDialog extends LogoutDialog {
                     }
                 }
             }
-        } else {
-            await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
-        }
-
-        return await step.endDialog();
-        
+    } else {
+        await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
     }
+
+    return await step.endDialog();
+        
 }
 
 module.exports.MainDialog = MainDialog;
