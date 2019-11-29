@@ -11,7 +11,6 @@ const TEXT_PROMPT = 'textPrompt';
 class MainDialog extends LogoutDialog {
     constructor() {
         super('MainDialog');
-        this.context.sendActivity("testing");
         
         this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
             .addDialog(new OAuthPrompt(OAUTH_PROMPT, {
@@ -49,6 +48,7 @@ class MainDialog extends LogoutDialog {
     }
 
     async promptStep(step) {
+        this.step.context.sendActivity("test before auth");
         return step.beginDialog(OAUTH_PROMPT);
     }
 

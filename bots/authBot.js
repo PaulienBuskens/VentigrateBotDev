@@ -8,7 +8,7 @@ class AuthBot extends DialogBot {
             const membersAdded = context.activity.membersAdded;
             for (let cnt = 0; cnt < membersAdded.length; cnt++) {
                 if (membersAdded[cnt].id !== context.activity.recipient.id) {
-                    await context.sendActivity('Welcome to the VentigrateBot. Type anything to get started. ');
+                    await context.sendActivity('Welcome to the VentigrateBot. Type anything to get started.');
                 }
             }
 
