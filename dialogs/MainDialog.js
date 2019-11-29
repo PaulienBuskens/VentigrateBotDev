@@ -37,7 +37,6 @@ class MainDialog extends LogoutDialog {
      * @param {*} accessor
      */
     async run(turnContext, accessor) {
-         console.log("Start dialog");
         const dialogSet = new DialogSet(accessor);
         dialogSet.add(this);
 
@@ -46,6 +45,11 @@ class MainDialog extends LogoutDialog {
         if (results.status === DialogTurnStatus.empty) {
             await dialogContext.beginDialog(this.id);
         }
+    }
+
+    async test(context, next){
+        await context.sendActivity("testmethode");
+        return next();
     }
 
     async promptStep(step) {
