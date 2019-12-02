@@ -71,6 +71,9 @@ class MainDialog extends LogoutDialog {
     }
 
     async graph(context,next){
+
+        await context.sendActivity("graph loop");
+
         const client = MicrosoftGraph.Client.init({
 	        defaultVersion: "v1.0",
 	        debugLogging: true,
@@ -86,12 +89,12 @@ class MainDialog extends LogoutDialog {
 	        .get()
 	        .then((res) => {
 		        console.log(res);
-                 context.sendActivity(res);
-                 context.sendActivity("response graph");
 	        })
 	        .catch((err) => {
 		        console.log(err);
 	        });
+
+            await context.sendActivity(client);
         }
 
     async promptStep(step) {
