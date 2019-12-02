@@ -85,7 +85,7 @@ class MainDialog extends LogoutDialog {
 
         let res = await client.api('/me/')
 	    .get();
-        
+
     }
 
     async promptStep(step) {
