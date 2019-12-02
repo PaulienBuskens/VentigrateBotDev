@@ -32,6 +32,7 @@ adapter.onTurnError = async (context, error) => {
 
     await context.sendActivity('The bot encounted an error or bug.');
     await context.sendActivity('To continue to run this bot, please fix the bot source code.');
+    await context.sendActivity(error);
     // Clear out state
     await conversationState.delete(context);
 };
