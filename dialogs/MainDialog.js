@@ -1,7 +1,6 @@
 const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { LogoutDialog } = require('./logoutDialog');
 const { OAuthHelpers } = require('../oAuthHelpers');
-const { MyAuthenticationProvider } = require('../MyAuthenticationProvider');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
@@ -71,11 +70,23 @@ class MainDialog extends LogoutDialog {
     }
 
     async graph(context,next){
-        let clientOptions: ClientOptions = {
-	        authProvider: new MyCustomAuthenticationProvider(),
+        const clientId = "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c"; // Client Id of the registered application
+        const callback = (errorDesc, token, error, tokenType) => {};
+            // An Optional options for initializing the MSAL @see https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics#configuration-options
+        const options = {
+	        redirectUri: "https://token.botframework.com/.auth/web/redirect",
         };
-        const client = Client.initWithMiddleware(clientOptions);
+        const graphScopes = ["user.read", "mail.send"]; // An array of graph scopes
 
+        // Initialize the MSAL @see https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics#initialization-of-msal
+        const userAgentApplication = new Msal.UserAgentApplication(clientId, undefined, callback, options);
+        const authProvider = new MicrosoftGraph.ImplicitMSALAuthenticationProvider(userAgentApplication, graphScopes);
+
+        const options = {
+	        authProvider, // An instance created from previous step
+        };
+        const Client = MicrosoftGraph.Client;
+        const client = Client.initWithMiddleware(options);
         
         let res = await client.api('/me/')
 	    .get();
