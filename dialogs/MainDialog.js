@@ -19,9 +19,9 @@ class MainDialog extends LogoutDialog {
         this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
             .addDialog(new OAuthPrompt(OAUTH_PROMPT, {
                 connectionName: process.env.ConnectionName,
-                text: 'Please login',
-                title: 'Login',
-                timeout: 300000
+                // text: 'Please login',
+                // title: 'Login',
+                // timeout: 300000
             }))
             .addDialog(new TextPrompt(TEXT_PROMPT))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
@@ -115,22 +115,22 @@ class MainDialog extends LogoutDialog {
 
             // If we have the token use the user is authenticated so we may use it to make API calls.
             if (tokenResponse && tokenResponse.token) {
-               const command = step.values.command;
+                const command = step.values.command;
 
                 
-                    switch (command) {
-                        case 'me':
-                            await OAuthHelpers.listMe(step.context, tokenResponse);
-                            break;
-                        case 'recent':
-                            await OAuthHelpers.listRecentMail(step.context, tokenResponse);
-                            break;
-                        case 'myemail':
-                            await OAuthHelpers.myEmail(step.context,tokenResponse);
-                            break;
-                        default:
-                            await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
-                        }
+                switch (command) {
+                    case 'me':
+                        await OAuthHelpers.listMe(step.context, tokenResponse);
+                        break;
+                    case 'recent':
+                        await OAuthHelpers.listRecentMail(step.context, tokenResponse);
+                        break;
+                    case 'myemail':
+                        await OAuthHelpers.myEmail(step.context,tokenResponse);
+                        break;
+                    default:
+                        await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
+                    }
             }
         } else {
             await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
