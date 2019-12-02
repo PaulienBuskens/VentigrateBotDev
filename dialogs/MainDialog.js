@@ -83,19 +83,10 @@ class MainDialog extends LogoutDialog {
 	        },
         });
 
-        // Get the name of the authenticated user with promises
-        client
-	        .api("/me")
-	        .select("displayName")
-	        .get()
-	        .then((res) => {
-		        console.log(res);
-	        })
-	        .catch((err) => {
-		        console.log(err);
-	        });
-
-        }
+        let res = await client.api('/me/')
+	    .get();
+        
+    }
 
     async promptStep(step) {
         return step.beginDialog(OAUTH_PROMPT);
