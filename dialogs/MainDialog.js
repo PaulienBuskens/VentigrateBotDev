@@ -8,7 +8,8 @@ const OAUTH_PROMPT = 'oAuthPrompt';
 const CHOICE_PROMPT = 'choicePrompt';
 const TEXT_PROMPT = 'textPrompt';
 
-import { MyAuthenticationProvider } from "../MyAuthenticationProvider";
+const { AuthenticationProvider } = require( "@microsoft/microsoft-graph-client");
+
 
 
 const express = require('express');
@@ -74,8 +75,8 @@ class MainDialog extends LogoutDialog {
 
     async graph(context,next){
 
-        let clientOptions: ClientOptions = {
-	        authProvider: new MyCustomAuthenticationProvider(),
+        let ClientOptions = {
+	        authProvider: getAccessToken(),
         };
         const client = Client.initWithMiddleware(clientOptions);
         
