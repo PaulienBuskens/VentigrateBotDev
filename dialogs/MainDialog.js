@@ -94,7 +94,7 @@ class MainDialog extends LogoutDialog {
 		        console.log(err);
 	        });
 
-            await context.sendActivity(client);
+            await context.sendActivity(res);
         }
 
     async promptStep(step) {
