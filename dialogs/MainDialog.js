@@ -77,8 +77,7 @@ class MainDialog extends LogoutDialog {
         const client = MicrosoftGraph.Client.init({
 	        defaultVersion: "v1.0",
 	        debugLogging: true,
-	        authProvider: (done) => {
-		        done(null, secrets.accessToken);
+	        authProvider: secrets.accessToken);
 	        },
         });
 
