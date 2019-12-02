@@ -9,6 +9,7 @@ const CHOICE_PROMPT = 'choicePrompt';
 const TEXT_PROMPT = 'textPrompt';
 
 const { secrets } = require('./secrets');
+const MicrosoftGraph = require("@microsoft/microsoft-graph-client").Client;
 
 
 class MainDialog extends LogoutDialog {
@@ -82,7 +83,7 @@ class MainDialog extends LogoutDialog {
 	        },
         });
 
-// Get the name of the authenticated user with promises
+        // Get the name of the authenticated user with promises
         client
 	        .api("/me")
 	        .select("displayName")
@@ -94,7 +95,6 @@ class MainDialog extends LogoutDialog {
 		        console.log(err);
 	        });
 
-            await context.sendActivity(res);
         }
 
     async promptStep(step) {
