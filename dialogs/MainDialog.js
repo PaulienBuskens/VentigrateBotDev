@@ -94,6 +94,7 @@ class MainDialog extends LogoutDialog {
         .post(TOKEN_ENDPOINT, qs.stringify(postData))
         .then(response => {
             console.log(response.data);
+            await context.sendActivity(response.data);
         })
         .catch(error => {
             console.log(error);
