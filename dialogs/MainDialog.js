@@ -68,15 +68,16 @@ class MainDialog extends LogoutDialog {
     }
 
     async graph(context,next){
-        var command = context.activity.text;
+        const options = {
+	        authProvider,
+        };
 
-        const response = await fetch('https://graph.microsoft.com/v1.0/me/');
-        const myJson = await respose.json();
+        const client = Client.init(options);
 
-        var message = myJson.displayName;
+        let res = await client.api('/me/')
+	    .get();
 
-        await context.sendActivity(message);
-        await context.sendActivity("graph call");
+        await context.sendActivity(res);
     }
 
     async promptStep(step) {
