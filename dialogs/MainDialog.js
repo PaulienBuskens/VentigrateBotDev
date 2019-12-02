@@ -47,7 +47,7 @@ class MainDialog extends LogoutDialog {
         }
     }
 
-    async test(context, next){
+    async giphy(context, next){
         
         var command = context.activity.text;
         var number = Math.floor(Math.random() * 19 ) + 1;
@@ -65,6 +65,18 @@ class MainDialog extends LogoutDialog {
 
         const message = MessageFactory.attachment(card);
         await context.sendActivity(message);
+    }
+
+    async graph(context,next){
+        var command = context.activity.text;
+
+        const response = await fetch('https://graph.microsoft.com/v1.0/me/');
+        const myJson = await respose.json();
+
+        var message = myJson.displayName;
+
+        await context.sendActivity(message);
+        await context.sendActivity("graph call");
     }
 
     async promptStep(step) {

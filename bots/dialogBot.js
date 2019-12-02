@@ -23,8 +23,12 @@ class DialogBot extends ActivityHandler {
 
             // Run the Dialog with the new message Activity.
             if(context.activity.text.includes("@giphy")){
-                await this.dialog.test(context, this.dialogState);
-            } else{
+                await this.dialog.giphy(context, this.dialogState);
+
+            } else if(context.activity.text.includes("@grahp")){
+                await this.dialog.graph(contextm, this.dialogState);
+
+            }else{
                 await this.dialog.run(context, this.dialogState);
             }
             
