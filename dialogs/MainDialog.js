@@ -81,7 +81,7 @@ class MainDialog extends LogoutDialog {
             client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
             resource: "https://graph.microsoft.com"
         };
-        var access_tokenGraph = "";
+        var access_tokenGraph = "Getting Token";
         var running = true
 
         request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
