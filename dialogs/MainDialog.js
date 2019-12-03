@@ -3,6 +3,7 @@ const { LogoutDialog } = require('./logoutDialog');
 const { OAuthHelpers } = require('../oAuthHelpers');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
+
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 const OAUTH_PROMPT = 'oAuthPrompt';
 const CHOICE_PROMPT = 'choicePrompt';
@@ -11,6 +12,14 @@ const TEXT_PROMPT = 'textPrompt';
 const { secrets } = require('./secrets');
 const MicrosoftGraph = require("@microsoft/microsoft-graph-client").Client;
 
+const request = require("request");
+const endpoint = "https://login.microsoftonline.com/common/oauth2/token";
+const requestParams = {
+    grant_type: "client_credentials",
+    client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+    client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+    resource: "https://graph.windows.net"
+};
 
 class MainDialog extends LogoutDialog {
     constructor() {
@@ -19,9 +28,9 @@ class MainDialog extends LogoutDialog {
         this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
             .addDialog(new OAuthPrompt(OAUTH_PROMPT, {
                 connectionName: process.env.ConnectionName,
-                // text: 'Please login',
-                // title: 'Login',
-                // timeout: 300000
+                text: 'Please login',
+                title: 'Login',
+                timeout: 300000
             }))
             .addDialog(new TextPrompt(TEXT_PROMPT))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
@@ -72,19 +81,25 @@ class MainDialog extends LogoutDialog {
     }
 
     async graph(context,next){
+        var access_tokenGraph = 0;
 
-        await context.sendActivity("graph loop");
-
-        const client = MicrosoftGraph.Client.init({
-	        defaultVersion: "v1.0",
-	        debugLogging: true,
-	        authProvider: (done) => {
-		        done(null, secrets.accessToken);
-	        },
+        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
+            if (err) {
+                console.log("error");
+            }else {
+                console.log("Body=" + body);
+                let parsedBody = JSON.parse(body);         
+                if (parsedBody.error_description) {
+                    console.log("Error=" + parsedBody.error_description);
+                } else {
+                console.log("Access Token=" + parsedBody.access_token);
+                access_tokenGraph = parsedBody.access_token;
+                }
+            }
         });
 
-        let res = await client.api('/me/')
-	    .get();
+
+        await context.sendActivity(access_tokenGraph);
 
     }
 
