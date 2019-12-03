@@ -4,6 +4,10 @@ const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } = req
 const { AuthBot } = require('./bots/authBot');
 const { MainDialog } = require('./dialogs/mainDialog');
 
+const appInsights = require("applicationinsights");
+appInsights.setup("2438e62b-3d88-4ff1-bfd4-1e34fd689e57");
+appInsights.start();
+
 // Note: Ensure you have a .env file and include MicrosoftAppId and MicrosoftAppPassword.
 // This MicrosoftApp should have OAuth enabled.
 const ENV_FILE = path.join(__dirname, '.env');
