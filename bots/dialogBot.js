@@ -6,7 +6,6 @@ class DialogBot extends ActivityHandler {
      * @param {ConversationState} conversationState
      * @param {UserState} userState
      * @param {Dialog} dialog
-     * @param {Access_tokenGraph} access_tokenGraph
      */
     constructor(conversationState, userState, dialog, access_tokenGraph) {
         super();
@@ -18,7 +17,6 @@ class DialogBot extends ActivityHandler {
         this.userState = userState;
         this.dialog = dialog;
         this.dialogState = this.conversationState.createProperty('DialogState');
-        this.access_tokenGraph = access_tokenGraph;
 
 
         this.onMessage(async (context, next) => {
@@ -30,15 +28,16 @@ class DialogBot extends ActivityHandler {
                 await this.dialog.giphy(context, this.dialogState);
 
             } else if(context.activity.text.includes("@graphToken")){
-                await this.dialog.graphToken(context, this.dialogState, this.access_tokenGraph);
+                await this.dialog.graphToken(context, this.dialogState);
 
-            } else if(context.activity.text.includes("@graph")){
-                await this.dialog.graph(context, this.dialogState);
+            } else if(context.activity.text.includes("@graphMe")){
+                await this.dialog.graphMe(context, this.dialogState);
 
+            } else if(context.activity.text.includes("@graphMail")){    
+                await this.dialog.graphRecentMail(context,this.dialogState);
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
-            
             
 
             // By calling next() you ensure that the next BotHandler is run.

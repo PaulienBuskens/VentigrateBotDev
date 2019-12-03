@@ -17,7 +17,8 @@ class OAuthHelpers {
         }
 
         // Pull in the data from Microsoft Graph.
-        const client = new SimpleGraphClient(tokenResponse.token);
+        //const client = new SimpleGraphClient(tokenResponse.token);
+        const client = new SimpleGraphClient(tokenResponse);
         const me = await client.getMe();
 
         await context.sendActivity(`You are ${ me.displayName }.`);
@@ -37,7 +38,7 @@ class OAuthHelpers {
         }
 
         // Pull in the data from Microsoft Graph.
-        const client = new SimpleGraphClient(tokenResponse.token);
+        const client = new SimpleGraphClient(tokenResponse);
         const me = await client.getEmail();
 
         await context.sendActivity(`Your email is ${ me.mail }.`);
@@ -57,7 +58,7 @@ class OAuthHelpers {
             throw new Error('OAuthHelpers.listRecentMail(): `tokenResponse` cannot be undefined.');
         }
 
-        var client = new SimpleGraphClient(tokenResponse.token);
+        var client = new SimpleGraphClient(tokenResponse);
         var response = await client.getRecentMail();
         var messages = response.value;
         if (Array.isArray(messages)) {

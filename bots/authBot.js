@@ -2,8 +2,8 @@ const { DialogBot } = require('./dialogBot');
 const request = require("request");
 
 class AuthBot extends DialogBot {
-    constructor(conversationState, userState, dialog, access_tokenGraph) {
-        super(conversationState, userState, dialog, access_tokenGraph);
+    constructor(conversationState, userState, dialog) {
+        super(conversationState, userState, dialog);
 
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
@@ -37,14 +37,14 @@ class AuthBot extends DialogBot {
                         }
                     });
 
-                    // while(running){
-                    //     await context.sendActivity(this.access_tokenGraph);
-                    //     if(this.access_tokenGraph != "Getting Token"){
-                    //         await context.sendActivity(this.access_tokenGraph);
-                    //         running = false;
-                    //         await next(this.access_tokenGraph);
-                    //     }
-                    // }
+                     while(running){
+                         await context.sendActivity(this.access_tokenGraph);
+                         if(this.access_tokenGraph != "Getting Token"){
+                            await context.sendActivity(this.access_tokenGraph);
+                            running = false;
+                            await next(this.access_tokenGraph);
+                         }
+                    }
                 }
             }
             // By calling next() you ensure that the next BotHandler is run.
