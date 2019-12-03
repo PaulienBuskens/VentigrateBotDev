@@ -43,6 +43,14 @@ class SimpleGraphClient {
                 return res;
             });
     }
+    
+    async getMail() {
+        return await this.graphClient
+            .api('/me/mail')
+            .get().then((res) => {
+                return res;
+            });
+    }
 
     /**
      * Collects information about the user in the bot.

@@ -34,7 +34,7 @@ class DialogBot extends ActivityHandler {
                 await this.dialog.graphMe(context, this.dialogState);
 
             } else if(context.activity.text.includes("@graphMail")){    
-                await this.dialog.graphRecentMail(context,this.dialogState);
+                await this.dialog.graphMail(context,this.dialogState);
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
