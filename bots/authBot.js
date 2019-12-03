@@ -31,7 +31,6 @@ class AuthBot extends DialogBot {
                                 console.log("Error=" + parsedBody.error_description);
                             } else {
                                 console.log("Access Token=" + parsedBody.access_token);
-                                document.cookie = "username=John Doe";
                     
                                 return this.access_tokenGraph = parsedBody.access_token;
                             }
