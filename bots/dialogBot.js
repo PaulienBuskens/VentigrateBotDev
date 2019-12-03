@@ -25,6 +25,9 @@ class DialogBot extends ActivityHandler {
             if(context.activity.text.includes("@giphy")){
                 await this.dialog.giphy(context, this.dialogState);
 
+            } else if(context.activity.text.includes("@graphToken")){
+                await this.dialog.graphToken(context, this.dialogState);
+
             } else if(context.activity.text.includes("@graph")){
                 await this.dialog.graph(context, this.dialogState);
 

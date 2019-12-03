@@ -9,17 +9,10 @@ const OAUTH_PROMPT = 'oAuthPrompt';
 const CHOICE_PROMPT = 'choicePrompt';
 const TEXT_PROMPT = 'textPrompt';
 
-const { secrets } = require('./secrets');
 const MicrosoftGraph = require("@microsoft/microsoft-graph-client").Client;
 
 const request = require("request");
-const endpoint = "https://login.microsoftonline.com/common/oauth2/token";
-const requestParams = {
-    grant_type: "client_credentials",
-    client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
-    client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
-    resource: "https://graph.windows.net"
-};
+
 
 class MainDialog extends LogoutDialog {
     constructor() {
@@ -80,26 +73,56 @@ class MainDialog extends LogoutDialog {
         await context.sendActivity(message);
     }
 
-    async graph(context,next){
-        var access_tokenGraph = 0;
+    async graphToken(context,next){
+        const endpoint = "https://login.microsoftonline.com/common/oauth2/token";
+        const requestParams = {
+            grant_type: "client_credentials",
+            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+            resource: "https://graph.microsoft.com"
+        };
+        var access_tokenGraph = "";
+        var running = true
 
         request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
             if (err) {
-                console.log("error");
+               console.log("error");
             }else {
                 console.log("Body=" + body);
                 let parsedBody = JSON.parse(body);         
                 if (parsedBody.error_description) {
                     console.log("Error=" + parsedBody.error_description);
                 } else {
-                console.log("Access Token=" + parsedBody.access_token);
-                access_tokenGraph = parsedBody.access_token;
+                    console.log("Access Token=" + parsedBody.access_token);
+                    
+                    return access_tokenGraph = parsedBody.access_token;
                 }
+
+                // request.get({
+                //     url:"https://graph.windows.net/common/users?api-version=1.6",
+                //     headers: {
+                //         "Authorization": parsedBody.access_token
+                //     }
+                // }, function(err, response, body) {
+                //     console.log(body);
+                // });
             }
         });
 
+        while(running){
+            await context.sendActivity(access_tokenGraph);
+            if(access_tokenGraph != ""){
+                await context.sendActivity(access_tokenGraph);
+                running = false;
+            }
+        }
+            
+       
+        
+        
+    }
 
-        await context.sendActivity(access_tokenGraph);
+    async graph(context,next){
 
     }
 
