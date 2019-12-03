@@ -6,8 +6,9 @@ class DialogBot extends ActivityHandler {
      * @param {ConversationState} conversationState
      * @param {UserState} userState
      * @param {Dialog} dialog
+     * @param {Access_tokenGraph} access_tokenGraph
      */
-    constructor(conversationState, userState, dialog) {
+    constructor(conversationState, userState, dialog, access_tokenGraph) {
         super();
         if (!conversationState) throw new Error('[DialogBot]: Missing parameter. conversationState is required');
         if (!userState) throw new Error('[DialogBot]: Missing parameter. userState is required');
@@ -17,16 +18,19 @@ class DialogBot extends ActivityHandler {
         this.userState = userState;
         this.dialog = dialog;
         this.dialogState = this.conversationState.createProperty('DialogState');
+        this.access_tokenGraph = access_tokenGraph;
+
 
         this.onMessage(async (context, next) => {
             console.log('Running dialog with Message Activity.');
+
 
             // Run the Dialog with the new message Activity.
             if(context.activity.text.includes("@giphy")){
                 await this.dialog.giphy(context, this.dialogState);
 
             } else if(context.activity.text.includes("@graphToken")){
-                await this.dialog.graphToken(context, this.dialogState);
+                await this.dialog.graphToken(context, this.dialogState, this.access_tokenGraph);
 
             } else if(context.activity.text.includes("@graph")){
                 await this.dialog.graph(context, this.dialogState);

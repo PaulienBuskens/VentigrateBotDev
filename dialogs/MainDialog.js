@@ -2,6 +2,7 @@ const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, Wate
 const { LogoutDialog } = require('./logoutDialog');
 const { OAuthHelpers } = require('../oAuthHelpers');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
+const { SimpleGraphClient } = require('../simple-graph-client');
 
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
@@ -9,8 +10,7 @@ const OAUTH_PROMPT = 'oAuthPrompt';
 const CHOICE_PROMPT = 'choicePrompt';
 const TEXT_PROMPT = 'textPrompt';
 
-const MicrosoftGraph = require("@microsoft/microsoft-graph-client").Client;
-
+const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
 
@@ -73,54 +73,14 @@ class MainDialog extends LogoutDialog {
         await context.sendActivity(message);
     }
 
-    async graphToken(context,next){
-        const endpoint = "https://login.microsoftonline.com/common/oauth2/token";
-        const requestParams = {
-            grant_type: "client_credentials",
-            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
-            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
-            resource: "https://graph.microsoft.com"
-        };
-        var access_tokenGraph = "Getting Token";
-        var running = true
+    async graphToken(context,next, access_token){
 
-        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
-            if (err) {
-               console.log("error");
-            }else {
-                console.log("Body=" + body);
-                let parsedBody = JSON.parse(body);         
-                if (parsedBody.error_description) {
-                    console.log("Error=" + parsedBody.error_description);
-                } else {
-                    console.log("Access Token=" + parsedBody.access_token);
-                    
-                    return access_tokenGraph = parsedBody.access_token;
-                }
+        await context.sendActivity("token");
+        await context.sendActivity(access_token);
 
-                // request.get({
-                //     url:"https://graph.windows.net/common/users?api-version=1.6",
-                //     headers: {
-                //         "Authorization": parsedBody.access_token
-                //     }
-                // }, function(err, response, body) {
-                //     console.log(body);
-                // });
-            }
-        });
+        const token = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6IkItMWlWM3BzanRVNVduQ1kxem9IU0x2WXBqOWtuWVgwRHVHcHdRSVlCeFUiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDAiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9mYzY5OTY4Ny01MGNlLTRlNzItYjA5ZC0wZjJkOWM3YjcyNWMvIiwiaWF0IjoxNTc1Mzc1ODUwLCJuYmYiOjE1NzUzNzU4NTAsImV4cCI6MTU3NTM3OTc1MCwiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IkFTUUEyLzhOQUFBQUZJRHFibmZ3a01VbCtWcGJHTm5mOFFwQXJlSGRZOXlMQXFEMGxWTnpOL0E9IiwiYW1yIjpbInB3ZCJdLCJhcHBfZGlzcGxheW5hbWUiOiJHcmFwaCBleHBsb3JlciIsImFwcGlkIjoiZGU4YmM4YjUtZDlmOS00OGIxLWE4YWQtYjc0OGRhNzI1MDY0IiwiYXBwaWRhY3IiOiIwIiwiZmFtaWx5X25hbWUiOiJCdXNrZW5zIiwiZ2l2ZW5fbmFtZSI6IlBhdWxpZW4iLCJpcGFkZHIiOiI5NC4xNDMuMTg5LjI0MyIsIm5hbWUiOiJQYXVsaWVuIEJ1c2tlbnMiLCJvaWQiOiI4M2YwNzY4YS1kYjM1LTRmYjctYTViZS05ZjEwODA3NzRhNjUiLCJwbGF0ZiI6IjMiLCJwdWlkIjoiMTAwMzIwMDA2NEQ1MzU5OSIsInNjcCI6IkFjY2Vzc1Jldmlldy5SZWFkLkFsbCBBY2Nlc3NSZXZpZXcuUmVhZFdyaXRlLkFsbCBBZ3JlZW1lbnQuUmVhZC5BbGwgQWdyZWVtZW50LlJlYWRXcml0ZS5BbGwgQWdyZWVtZW50QWNjZXB0YW5jZS5SZWFkIEFncmVlbWVudEFjY2VwdGFuY2UuUmVhZC5BbGwgQXBwQ2F0YWxvZy5SZWFkV3JpdGUuQWxsIEF1ZGl0TG9nLlJlYWQuQWxsIEJvb2tpbmdzLk1hbmFnZS5BbGwgQm9va2luZ3MuUmVhZC5BbGwgQm9va2luZ3MuUmVhZFdyaXRlLkFsbCBDYWxlbmRhcnMuUmVhZFdyaXRlIENvbnRhY3RzLlJlYWRXcml0ZSBGaWxlcy5SZWFkV3JpdGUuQWxsIEdyb3VwLlJlYWQuQWxsIEdyb3VwLlJlYWRXcml0ZS5BbGwgTWFpbC5SZWFkV3JpdGUgTm90ZXMuUmVhZFdyaXRlLkFsbCBvcGVuaWQgUGVvcGxlLlJlYWQgcHJvZmlsZSBTaXRlcy5SZWFkV3JpdGUuQWxsIFRhc2tzLlJlYWRXcml0ZSBVc2VyLlJlYWQgVXNlci5SZWFkQmFzaWMuQWxsIFVzZXIuUmVhZFdyaXRlIGVtYWlsIiwic3ViIjoiUy1wQkVqaDVjMkNYWXJDeDJBcXlQS2FxT1MwX1dOeWhGOW8yUWRsOVNKSSIsInRpZCI6ImZjNjk5Njg3LTUwY2UtNGU3Mi1iMDlkLTBmMmQ5YzdiNzI1YyIsInVuaXF1ZV9uYW1lIjoicGF1bGllbkB2ZW50aWdyYXRlZGV2Lm9ubWljcm9zb2Z0LmNvbSIsInVwbiI6InBhdWxpZW5AdmVudGlncmF0ZWRldi5vbm1pY3Jvc29mdC5jb20iLCJ1dGkiOiIwQUwxdENoU1RrYUo4WDNrMTNwUkFRIiwidmVyIjoiMS4wIiwid2lkcyI6WyI2MmU5MDM5NC02OWY1LTQyMzctOTE5MC0wMTIxNzcxNDVlMTAiXSwieG1zX3N0Ijp7InN1YiI6IlB4RmhhVEpPaTdSN29ERkU1T0NkSnpkYmhEbzhUeDdWSTBSU0E0aGRIVk0ifSwieG1zX3RjZHQiOjE1NDE3NTQ3OTB9.QaHP-BG4dWeYgagXDtBptQvGOrksXCXBbbh2n64VLM1T4sIY9sHOIk_8IEghRw9HXYvum180nCND3Qc40Fw2LULYb1NuplXCew4bVNe6ih_bCreJ2F9mZetx1JtJh_50OiLY29xUQGlvGuAIJxYeec0cI0NFAq93tHftxeTYEIZO0uig-GxNMf9-YGx1-WQtgzJbSV185I8QnFznmV4uXn0TTLr99JirsdZ3XUNFV0vtOATtBX0pRO54wpgbmvt7Ve3i9wdbP_vzW_dLULpxpfQpFb5npqh61JPyF-dmASdMGyOiFy6zKKXNzlL-Jq-ST8jLW0JU0ESos_Xwn4LC3w'
 
-        while(running){
-            await context.sendActivity(access_tokenGraph);
-            if(access_tokenGraph != ""){
-                await context.sendActivity(access_tokenGraph);
-                running = false;
-            }
-        }
-            
-    }
-
-    async graph(context,next){
-
+        await OAuthHelpers.listMe(context, token);
     }
 
     async promptStep(step) {
