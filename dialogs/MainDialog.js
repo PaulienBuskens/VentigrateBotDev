@@ -117,9 +117,6 @@ class MainDialog extends LogoutDialog {
             }
         }
             
-       
-        
-        
     }
 
     async graph(context,next){
