@@ -91,7 +91,7 @@ class MainDialog extends LogoutDialog {
     }
 
     async cookie(context,next){
-        Cookies.set('key', 'value');
+        Cookies.set('key', 'value', { domain: 'https://teams.microsoft.com', secure: true });
         await context.sendActivity("set cookie");
     }
 
