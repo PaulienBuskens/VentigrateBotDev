@@ -13,12 +13,6 @@ const TEXT_PROMPT = 'textPrompt';
 const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
-const { window } = (new JSDOM()).window;
-//const window = jsdom.jsdom().parentWindow;
-const Cookies = require('cookies-js')(window);
-
 
 class MainDialog extends LogoutDialog {
     constructor() {
@@ -91,7 +85,6 @@ class MainDialog extends LogoutDialog {
     }
 
     async cookie(context,next){
-        Cookies.set('key', 'value', { domain: 'https://teams.microsoft.com', secure: true });
         await context.sendActivity("set cookie");
     }
 
@@ -127,20 +120,16 @@ class MainDialog extends LogoutDialog {
             // If we have the token use the user is authenticated so we may use it to make API calls.
             if (tokenResponse && tokenResponse.token) {
                 const command = step.values.command;
-
                 
                 switch (command) {
                     case 'me':
                         await OAuthHelpers.listMe(step.context, tokenResponse);
                         break;
-                    case 'recent':
-                        await OAuthHelpers.listRecentMail(step.context, tokenResponse);
-                        break;
                     case 'myemail':
                         await OAuthHelpers.myEmail(step.context,tokenResponse);
                         break;
                     default:
-                        await step.context.sendActivity(`Your token is ${ tokenResponse.token }`);
+                        await step.context.sendActivity(`Your token is ${ tokenResponse }`);
                     }
             }
         } else {

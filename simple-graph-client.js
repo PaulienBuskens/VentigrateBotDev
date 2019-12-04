@@ -21,19 +21,6 @@ class SimpleGraphClient {
     }
 
     /**
-     * Gets recent mail the user has received within the last hour and displays up to 5 of the emails in the bot.
-     */
-    async getRecentMail() {
-        return await this.graphClient
-            .api('/me/messages')
-            .version('beta')
-            .top(5)
-            .get().then((res) => {
-                return res;
-            });
-    }
-
-    /**
      * Collects information about the user in the bot.
      */
     async getMe() {
@@ -43,39 +30,7 @@ class SimpleGraphClient {
                 return res;
             });
     }
-    
-    async getMail() {
-        return await this.graphClient
-            .api('/me/mail')
-            .get().then((res) => {
-                return res;
-            });
-    }
 
-    /**
-     * Collects information about the user in the bot.
-     */
-    async getEmail() {
-        return await this.graphClient
-            .api('/me')
-            .select('mail')
-            .get().then((res) => {
-                return res;
-            });
-    }
-
-    /**
-     * Collects the user's manager in the bot.
-     */
-    async getManager() {
-        return await this.graphClient
-            .api('/me/manager')
-            .version('beta')
-            .select('displayName')
-            .get().then((res) => {
-                return res;
-            });
-    }
 }
 
 exports.SimpleGraphClient = SimpleGraphClient;
