@@ -5,11 +5,6 @@ const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('bot
 const { SimpleGraphClient } = require('../simple-graph-client');
 
 
-const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
-const OAUTH_PROMPT = 'oAuthPrompt';
-const CHOICE_PROMPT = 'choicePrompt';
-const TEXT_PROMPT = 'textPrompt';
-
 const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
@@ -18,22 +13,6 @@ class MainDialog extends LogoutDialog {
     constructor() {
         super('MainDialog');
         
-        this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
-            .addDialog(new OAuthPrompt(OAUTH_PROMPT, {
-                connectionName: process.env.ConnectionName,
-                text: 'Please login',
-                title: 'Login',
-                timeout: 300000
-            }))
-            .addDialog(new TextPrompt(TEXT_PROMPT))
-            .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
-                this.promptStep.bind(this),
-                this.loginStep.bind(this),
-                this.commandStep.bind(this),
-                this.processStep.bind(this)
-            ]));
-
-        this.initialDialogId = MAIN_WATERFALL_DIALOG;
     }
 
     /**
@@ -92,51 +71,6 @@ class MainDialog extends LogoutDialog {
         await OAuthHelpers.mail(context, token);
     }
 
-    async promptStep(step) {
-        return step.beginDialog(OAUTH_PROMPT);
-    }
-
-    async loginStep(step) {
-        // Get the token from the previous step. Note that we could also have gotten the
-        // token directly from the prompt itself. There is an example of this in the next method.
-        const tokenResponse = step.result;
-        if (tokenResponse) {
-            //await step.context.sendActivity('You are now logged in.');
-            return await step.prompt(TEXT_PROMPT, { prompt: 'You are now logged in. What would you like to do?' });
-        }
-        await step.context.sendActivity('Login was not successful please try again.');
-        return await step.endDialog();
-    }
-
-    async commandStep(step) {
-        step.values.command = step.result;
-        return await step.beginDialog(OAUTH_PROMPT);
-    }
-
-    async processStep(step) {
-        if (step.result) {
-            const tokenResponse = step.result;
-
-            // If we have the token use the user is authenticated so we may use it to make API calls.
-            if (tokenResponse && tokenResponse.token) {
-                const command = step.values.command;
-                
-                switch (command) {
-                    case 'me':
-                        await OAuthHelpers.listMe(step.context, tokenResponse);
-                        break;
-                    case 'myemail':
-                        await OAuthHelpers.myEmail(step.context,tokenResponse);
-                        break;
-                    default:
-                        await step.context.sendActivity(`Your token is ${ tokenResponse }`);
-                    }
-            }
-        } else {
-            await step.context.sendActivity('We couldn\'t log you in. Please try again later.');
-        }
-        return await step.endDialog();
-    }
 }
 
 module.exports.MainDialog = MainDialog;
