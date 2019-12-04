@@ -13,7 +13,11 @@ const TEXT_PROMPT = 'textPrompt';
 const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
-const Cookies = require('js-cookie');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const { window } = (new JSDOM()).window;
+//const window = jsdom.jsdom().parentWindow;
+const Cookies = require('cookies-js')(window);
 
 
 class MainDialog extends LogoutDialog {
@@ -87,7 +91,8 @@ class MainDialog extends LogoutDialog {
     }
 
     async cookie(context,next){
-        Cookies.set('name', 'value');
+        Cookies.set('key', 'value');
+        await context.sendActivity("set cookie");
     }
 
     async graphMail(context,next,token){
