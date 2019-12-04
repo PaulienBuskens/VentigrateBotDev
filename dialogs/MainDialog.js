@@ -13,7 +13,7 @@ const TEXT_PROMPT = 'textPrompt';
 const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
-const cookie = require('cookie');
+const Cookies = require('js-cookie');
 
 
 class MainDialog extends LogoutDialog {
