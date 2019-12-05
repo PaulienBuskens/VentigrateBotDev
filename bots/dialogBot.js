@@ -31,7 +31,7 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@graphToken")){
                 await this.dialog.graphToken(context, this.dialogState, token);
 
-            } else if(context.activity.text.includes("@graphMe")){
+            } else if(context.activity.text.includes("@graphAdmin")){
                 await this.dialog.graphMe(context, this.dialogState);
 
             } else if(context.activity.text.includes("@graphMail")){    

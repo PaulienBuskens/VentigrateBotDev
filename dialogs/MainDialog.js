@@ -130,7 +130,7 @@ class MainDialog extends LogoutDialog {
             client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
             resource: "https://graph.microsoft.com"
         };
-        var access_tokenGraph = "Getting Token";
+        var access_tokenGraph = "Getting Data";
         var displayName = "...";
         var mail = "...";
         var running = true
@@ -165,6 +165,7 @@ class MainDialog extends LogoutDialog {
                             console.log(info.value[0].mail);
                             displayName = info.value[0].displayName;
                             mail = info.value[0].mail;
+
                         } else{
                             console.log("else loop");
                             console.log(body);
@@ -175,8 +176,8 @@ class MainDialog extends LogoutDialog {
 
                     return {
                         access_tokenGraph: parsedBody.access_token,
-                        displayName,
-                        mail
+                        displayName: displayName,
+                        mail: mail
                     }
 
                 }
@@ -185,8 +186,9 @@ class MainDialog extends LogoutDialog {
 
 
         while(running){
-          // await context.sendActivity(access_tokenGraph);
-            if(displayName != "..."){
+           await context.sendActivity(access_tokenGraph);
+            if(access_tokenGraph != "Getting Data"){
+               // await context.sendActivity(access_tokenGraph);
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
