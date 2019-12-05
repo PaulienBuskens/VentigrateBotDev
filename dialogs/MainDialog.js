@@ -1,9 +1,6 @@
 const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { LogoutDialog } = require('./logoutDialog');
-const { OAuthHelpers } = require('../oAuthHelpers');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
-const { SimpleGraphClient } = require('../simple-graph-client');
-
 
 const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
@@ -195,10 +192,6 @@ class MainDialog extends LogoutDialog {
             }
         }
         
-    }
-
-    async graphMail(context,next,token){
-        await OAuthHelpers.mail(context, token);
     }
 
 }
