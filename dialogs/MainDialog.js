@@ -104,9 +104,7 @@ class MainDialog extends LogoutDialog {
                     request(options, callback);
 
                     return {
-                        access_tokenGraph: parsedBody.access_token,
-                        displayName,
-                        mail
+                        access_tokenGraph: parsedBody.access_token
                     }
 
                 }
@@ -118,8 +116,6 @@ class MainDialog extends LogoutDialog {
             await context.sendActivity(access_tokenGraph);
             if(this.access_tokenGraph != "Getting Token"){
                 await context.sendActivity(access_tokenGraph);
-                await context.sendActivity(displayName);
-                await context.sendActivity(mail);
                 running = false;
             }
         }
@@ -127,7 +123,7 @@ class MainDialog extends LogoutDialog {
     }
 
     async graphMe(context,next){
-        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+         const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
         const requestParams = {
             grant_type: "client_credentials",
             client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
@@ -135,6 +131,8 @@ class MainDialog extends LogoutDialog {
             resource: "https://graph.microsoft.com"
         };
         var access_tokenGraph = "Getting Token";
+        var displayName = "...";
+        var mail = "...";
         var running = true
 
         request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
@@ -152,7 +150,7 @@ class MainDialog extends LogoutDialog {
 
 
                     var options = {
-                        url: 'https://graph.microsoft.com/v1.0/Me',
+                        url: 'https://graph.microsoft.com/v1.0/users?$top=1',
                         headers: {
                             Authorization : access_tokenGraph
                         }
@@ -165,6 +163,8 @@ class MainDialog extends LogoutDialog {
                             console.log(info);
                             console.log(info.value[0].displayName);
                             console.log(info.value[0].mail);
+                            displayName = info.value[0].displayName;
+                            mail = info.value[0].mail;
                         } else{
                             console.log("else loop");
                             console.log(body);
@@ -173,19 +173,26 @@ class MainDialog extends LogoutDialog {
  
                     request(options, callback);
 
-                    return access_tokenGraph = parsedBody.access_token;
+                    return {
+                        access_tokenGraph: parsedBody.access_token,
+                        displayName,
+                        mail
+                    }
+
                 }
             }
         });
 
 
         while(running){
-            await context.sendActivity(access_tokenGraph);
+          // await context.sendActivity(access_tokenGraph);
             if(this.access_tokenGraph != "Getting Token"){
-                await context.sendActivity(access_tokenGraph);
+                await context.sendActivity(displayName);
+                await context.sendActivity(mail);
                 running = false;
             }
         }
+        
     }
 
     async graphMail(context,next,token){
