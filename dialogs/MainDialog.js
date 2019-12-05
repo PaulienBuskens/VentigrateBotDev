@@ -303,8 +303,8 @@ class MainDialog {
                             console.log(info);
                             console.log(info.value[0].subject);
                             console.log(info.value[0].start.dateTime);
-                            displayName = info.value[0].displayName;
-                            mail = info.value[0].mail;
+                            displayName = info.value[0].subject;
+                            mail = info.value[0].dateTime;
 
                         } else{
                             console.log("else loop");
