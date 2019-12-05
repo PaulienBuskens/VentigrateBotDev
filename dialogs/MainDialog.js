@@ -254,7 +254,6 @@ class MainDialog {
         while(running){
            await context.sendActivity(access_tokenGraph);
             if(access_tokenGraph != "Getting Data"){
-               // await context.sendActivity(access_tokenGraph);
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
@@ -262,6 +261,7 @@ class MainDialog {
         }
         
     }
+
     async graphEvents(context,next){
         const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
         const requestParams = {
@@ -271,8 +271,8 @@ class MainDialog {
             resource: "https://graph.microsoft.com"
         };
         var access_tokenGraph = "Getting Data";
-        var displayName = "...";
-        var mail = "...";
+        var subject = "...";
+        var dateTime = "...";
         var running = true
 
         request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
@@ -303,8 +303,8 @@ class MainDialog {
                             console.log(info);
                             console.log(info.value[0].subject);
                             console.log(info.value[0].start.dateTime);
-                            displayName = info.value[0].subject;
-                            mail = info.value[0].dateTime;
+                            subject = info.value[0].subject;
+                            dateTime = info.value[0].dateTime;
 
                         } else{
                             console.log("else loop");
@@ -316,8 +316,8 @@ class MainDialog {
 
                     return {
                         access_tokenGraph: parsedBody.access_token,
-                        displayName: displayName,
-                        mail: mail
+                        subject: subject,
+                        dateTime: dateTime
                     }
 
                 }
@@ -328,14 +328,96 @@ class MainDialog {
         while(running){
            await context.sendActivity(access_tokenGraph);
             if(access_tokenGraph != "Getting Data"){
-               // await context.sendActivity(access_tokenGraph);
-                await context.sendActivity(displayName);
-                await context.sendActivity(mail);
+                await context.sendActivity(subject);
+                await context.sendActivity(dateTime);
                 running = false;
             }
         }
         
     }
+
+    async graphUser(context,next){
+        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+        const requestParams = {
+            grant_type: "client_credentials",
+            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+            resource: "https://graph.microsoft.com"
+        };
+        var access_tokenGraph = "Getting Data";
+        var displayName = "...";
+        var mail = "...";
+        var running = true
+
+        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
+            if (err) {
+                console.log("error");
+            }else {
+                //console.log("Body=" + body);
+                let parsedBody = JSON.parse(body);         
+                if (parsedBody.error_description) {
+                    console.log("Error=" + parsedBody.error_description);
+                } else {
+                    //console.log("Access Token=" + parsedBody.access_token);  
+
+                    access_tokenGraph = parsedBody.access_token;
+
+
+                    var options = {
+                        url: "https://graph.microsoft.com/v1.0/me",
+                        headers: {
+                            Authorization : access_tokenGraph
+                        }
+                    };
+ 
+                    function callback(error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var info = JSON.parse(body);
+                            console.log("graphcall")
+                            console.log(info);
+                            // console.log(info.value[0].displayName);
+                            // console.log(info.value[0].userPrincipalName);
+                            // displayName = info.value[0].displayName;
+                            // mail = info.value[0].userPrincipalName;
+
+                        } else{
+                            console.log("else loop");
+                            console.log(body);
+                        }
+                    }
+ 
+                    request(options, callback);
+
+                    return {
+                        access_tokenGraph: parsedBody.access_token,
+                        // subject: subject,
+                        // dateTime: dateTime
+                    }
+
+                }
+            }
+        });
+
+
+        while(running){
+           await context.sendActivity(access_tokenGraph);
+            if(access_tokenGraph != "Getting Data"){
+                 await context.sendActivity(displayName);
+                 await context.sendActivity(mail);
+                running = false;
+            }
+        }
+        
+    }
+
+
+
+    /*
+    
+    Message in a channel
+    all my planner tasks
+    
+     */
 
 }
 
