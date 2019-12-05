@@ -28,3 +28,4 @@ class AuthBot extends DialogBot {
 }
 
 module.exports.AuthBot = AuthBot;
+

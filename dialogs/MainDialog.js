@@ -1,15 +1,9 @@
 const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
-const { LogoutDialog } = require('./logoutDialog');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
-const { Client } = require('@microsoft/microsoft-graph-client');
 const request = require("request");
 
-class MainDialog extends LogoutDialog {
-    constructor() {
-        super('MainDialog');
-        
-    }
+class MainDialog {
 
     /**
      * The run method handles the incoming activity (in the form of a TurnContext) and passes it through the dialog system.
@@ -119,8 +113,8 @@ class MainDialog extends LogoutDialog {
         
     }
 
-    async graphMe(context,next){
-         const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+    async graphAdmin(context,next){
+        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
         const requestParams = {
             grant_type: "client_credentials",
             client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
@@ -160,6 +154,155 @@ class MainDialog extends LogoutDialog {
                             console.log(info);
                             console.log(info.value[0].displayName);
                             console.log(info.value[0].mail);
+                            displayName = info.value[0].displayName;
+                            mail = info.value[0].mail;
+
+                        } else{
+                            console.log("else loop");
+                            console.log(body);
+                        }
+                    }
+ 
+                    request(options, callback);
+
+                    return {
+                        access_tokenGraph: parsedBody.access_token,
+                        displayName: displayName,
+                        mail: mail
+                    }
+
+                }
+            }
+        });
+
+
+        while(running){
+           await context.sendActivity(access_tokenGraph);
+            if(access_tokenGraph != "Getting Data"){
+               // await context.sendActivity(access_tokenGraph);
+                await context.sendActivity(displayName);
+                await context.sendActivity(mail);
+                running = false;
+            }
+        }
+        
+    }
+
+    async graphMe(context,next){
+        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+        const requestParams = {
+            grant_type: "client_credentials",
+            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+            resource: "https://graph.microsoft.com"
+        };
+        var access_tokenGraph = "Getting Data";
+        var displayName = "...";
+        var mail = "...";
+        var running = true
+
+        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
+            if (err) {
+                console.log("error");
+            }else {
+                console.log("Body=" + body);
+                let parsedBody = JSON.parse(body);         
+                if (parsedBody.error_description) {
+                    console.log("Error=" + parsedBody.error_description);
+                } else {
+                    console.log("Access Token=" + parsedBody.access_token);  
+
+                    access_tokenGraph = parsedBody.access_token;
+
+
+                    var options = {
+                        url: "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Paulien Buskens'",
+                        headers: {
+                            Authorization : access_tokenGraph
+                        }
+                    };
+ 
+                    function callback(error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var info = JSON.parse(body);
+                            console.log("graphcall")
+                            console.log(info);
+                            console.log(info.value[0].displayName);
+                            console.log(info.value[0].mail);
+                            displayName = info.value[0].displayName;
+                            mail = info.value[0].mail;
+
+                        } else{
+                            console.log("else loop");
+                            console.log(body);
+                        }
+                    }
+ 
+                    request(options, callback);
+
+                    return {
+                        access_tokenGraph: parsedBody.access_token,
+                        displayName: displayName,
+                        mail: mail
+                    }
+
+                }
+            }
+        });
+
+
+        while(running){
+           await context.sendActivity(access_tokenGraph);
+            if(access_tokenGraph != "Getting Data"){
+               // await context.sendActivity(access_tokenGraph);
+                await context.sendActivity(displayName);
+                await context.sendActivity(mail);
+                running = false;
+            }
+        }
+        
+    }
+    async graphEvents(context,next){
+        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+        const requestParams = {
+            grant_type: "client_credentials",
+            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+            resource: "https://graph.microsoft.com"
+        };
+        var access_tokenGraph = "Getting Data";
+        var displayName = "...";
+        var mail = "...";
+        var running = true
+
+        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
+            if (err) {
+                console.log("error");
+            }else {
+                console.log("Body=" + body);
+                let parsedBody = JSON.parse(body);         
+                if (parsedBody.error_description) {
+                    console.log("Error=" + parsedBody.error_description);
+                } else {
+                    console.log("Access Token=" + parsedBody.access_token);  
+
+                    access_tokenGraph = parsedBody.access_token;
+
+
+                    var options = {
+                        url: "https://graph.microsoft.com/v1.0/users/paulien@ventigratedev.onmicrosoft.com/events",
+                        headers: {
+                            Authorization : access_tokenGraph
+                        }
+                    };
+ 
+                    function callback(error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var info = JSON.parse(body);
+                            console.log("graphcall")
+                            console.log(info);
+                            console.log(info.value[0].subject);
+                            console.log(info.value[0].start.dateTime);
                             displayName = info.value[0].displayName;
                             mail = info.value[0].mail;
 
