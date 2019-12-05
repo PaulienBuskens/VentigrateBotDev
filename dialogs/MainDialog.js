@@ -114,7 +114,7 @@ class MainDialog extends LogoutDialog {
 
         while(running){
             await context.sendActivity(access_tokenGraph);
-            if(this.access_tokenGraph != "Getting Token"){
+            if(access_tokenGraph != "Getting Token"){
                 await context.sendActivity(access_tokenGraph);
                 running = false;
             }
@@ -186,7 +186,7 @@ class MainDialog extends LogoutDialog {
 
         while(running){
           // await context.sendActivity(access_tokenGraph);
-            if(this.access_tokenGraph != "Getting Token"){
+            if(displayName != "..."){
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
