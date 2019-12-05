@@ -82,7 +82,7 @@ class MainDialog extends LogoutDialog {
 
 
                     var options = {
-                        url: 'https://graph.microsoft.com/v1.0/me/',
+                        url: 'https://graph.microsoft.com/v1.0/users/',
                         headers: {
                             Authorization : access_tokenGraph
                         }
@@ -154,7 +154,7 @@ class MainDialog extends LogoutDialog {
              await context.sendActivity(token);
              if(this.access_tokenGraph != "Getting Token"){
                 await context.sendActivity(token);
-               // await OAuthHelpers.listMe(context, token);
+                await OAuthHelpers.listMe(context, token);
                 running = false;
             }
         }
