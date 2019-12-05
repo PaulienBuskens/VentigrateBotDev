@@ -37,8 +37,6 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@graphMail")){    
                 await this.dialog.graphMail(context,this.dialogState, token);
 
-            } else if(context.activity.text.includes("@cookie")){    
-                await this.dialog.cookie(context,this.dialogState);
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
