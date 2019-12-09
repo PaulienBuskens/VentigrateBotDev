@@ -14,7 +14,7 @@ class MainDialog {
         await context.sendActivity("- For the your name en email '@graphMe'.");
         await context.sendActivity("- For the your upcomming events '@graphEvents'.");
         await context.sendActivity("- For a random quote '@quote'.");
-        await context.sendActivity("- For the wheater '@wheater'.");
+        await context.sendActivity("- For the wheater '@wheater + name city'.");
     }
 
     async giphy(context, next){
@@ -38,6 +38,7 @@ class MainDialog {
     }
 
     async quote(context, next){
+
         
         const response = await fetch('https://api.quotable.io/random');
         const myJson = await response.json();
@@ -49,26 +50,21 @@ class MainDialog {
 
     async weather(context, next){
 
-        const key = '5f0fc0d90506ff8451e192c0ed55f0fd';
+        var command = context.activity.text;
+        var city = command.replace("@wheater","");
 
-        const response = await fetch('http://api.openweathermap.org/data/2.5/weather?q=Antwerp&APPID=5f0fc0d90506ff8451e192c0ed55f0fd');
+        console.log(city);
+        const response = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+city+'&APPID=5f0fc0d90506ff8451e192c0ed55f0fd');
         const myJson = await response.json();
         console.log(myJson);
 
         const temperature = myJson.main.temp;
         console.log(temperature);
 
-        var converted = (temperature - 32);
-        var converted2 = converted * 5;
-        var newTemp = converted/9;
-
-        console.log(converted);
-        console.log(converted2);
-        console.log(newTemp);
+        var newTemp = temperature - 273.15;
 
         const description = myJson.weather[0].description;
 
-        console.log(description);
 
         await context.sendActivity(Math.round(newTemp * 100) / 100 + " °C");
         await context.sendActivity(description);
