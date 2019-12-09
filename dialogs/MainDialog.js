@@ -11,15 +11,22 @@ class MainDialog {
      * @param {*} turnContext
      * @param {*} accessor
      */
-    async run(turnContext, accessor) {
-        const dialogSet = new DialogSet(accessor);
-        dialogSet.add(this);
+    async run(context, accessor) {
+        // const dialogSet = new DialogSet(accessor);
+        // dialogSet.add(this);
 
-        const dialogContext = await dialogSet.createContext(turnContext);
-        const results = await dialogContext.continueDialog();
-        if (results.status === DialogTurnStatus.empty) {
-            await dialogContext.beginDialog(this.id);
-        }
+        // const dialogContext = await dialogSet.createContext(turnContext);
+        // const results = await dialogContext.continueDialog();
+        // if (results.status === DialogTurnStatus.empty) {
+        //     await dialogContext.beginDialog(this.id);
+        // }
+
+        await context.sendActivity("HELP MENU:");
+        await context.sendActivity("- For a giphy '@giphy + subject giphy'."); 
+        await context.sendActivity("- For the graph token '@graphToken'. ");
+        await context.sendActivity("- For the admin name en email '@graphAdmin'.");
+        await context.sendActivity("- For the your name en email '@graphMe'.");
+        await context.sendActivity("- For the your upcomming events '@graphEvents'.");
     }
 
     async giphy(context, next){
