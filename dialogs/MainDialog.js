@@ -102,7 +102,7 @@ class MainDialog {
                     request(options, callback);
 
                     return {
-                        access_tokenGraph: parsedBody.access_token
+                        access_tokenGraph: access_tokenGraph
                     }
 
                 }
@@ -173,7 +173,7 @@ class MainDialog {
                     request(options, callback);
 
                     return {
-                        access_tokenGraph: parsedBody.access_token,
+                        access_tokenGraph: access_tokenGraph,
                         displayName: displayName,
                         mail: mail
                     }
@@ -248,7 +248,7 @@ class MainDialog {
                     request(options, callback);
 
                     return {
-                        access_tokenGraph: parsedBody.access_token,
+                        access_tokenGraph: access_tokenGraph,
                         displayName: displayName,
                         mail: mail
                     }
@@ -322,7 +322,7 @@ class MainDialog {
                     request(options, callback);
 
                     return {
-                        access_tokenGraph: parsedBody.access_token,
+                        access_tokenGraph: access_tokenGraph,
                         subject: subject,
                         dateTime: dateTime
                     }
