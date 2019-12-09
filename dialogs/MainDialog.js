@@ -16,6 +16,7 @@ class MainDialog {
         await context.sendActivity("- For the your upcomming events '@graphEvents'.");
         await context.sendActivity("- For a random quote '@quote'.");
         await context.sendActivity("- For the wheater '@wheater + name city'.");
+        await context.sendActivity("- For the info '@explain + input'.");
     }
 
     async giphy(context, next){
