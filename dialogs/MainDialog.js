@@ -13,6 +13,7 @@ class MainDialog {
         await context.sendActivity("- For the admin name en email '@graphAdmin'.");
         await context.sendActivity("- For the your name en email '@graphMe'.");
         await context.sendActivity("- For the your upcomming events '@graphEvents'.");
+        await context.sendActivity("- For a random quote '@quote'.");
     }
 
     async giphy(context, next){
@@ -33,6 +34,16 @@ class MainDialog {
 
         const message = MessageFactory.attachment(card);
         await context.sendActivity(message);
+    }
+
+    async quote(context, next){
+        
+        const response = await fetch('https://api.quotable.io/random');
+        const myJson = await response.json();
+
+        var quote = myJson.content;
+
+        await context.sendActivity(quote);
     }
 
     async graphToken(context,next){
@@ -117,7 +128,7 @@ class MainDialog {
         var access_tokenGraph = "Getting Data";
         var displayName = "...";
         var mail = "...";
-        var running = true
+        var running = true;
 
         request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
             if (err) {
@@ -170,13 +181,13 @@ class MainDialog {
 
 
         while(running){
-           await context.sendActivity("getting data");
+          // await context.sendActivity("getting data");
+           
             if(displayName != "..."){
-               // await context.sendActivity(access_tokenGraph);
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
-            }
+            } 
         }
         
     }

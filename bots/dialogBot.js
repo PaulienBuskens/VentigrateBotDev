@@ -41,6 +41,9 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@graphUser")){    
                 await this.dialog.graphUser(context,this.dialogState);
 
+            } else if(context.activity.text.includes("@quote")){    
+                await this.dialog.quote(context,this.dialogState);
+
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
