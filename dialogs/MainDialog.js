@@ -1,25 +1,11 @@
-const { ChoicePrompt, DialogSet, DialogTurnStatus, OAuthPrompt, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
 const request = require("request");
 
 class MainDialog {
 
-    /**
-     * The run method handles the incoming activity (in the form of a TurnContext) and passes it through the dialog system.
-     * If no dialog is active, it will start the default dialog.
-     * @param {*} turnContext
-     * @param {*} accessor
-     */
-    async run(context, accessor) {
-        // const dialogSet = new DialogSet(accessor);
-        // dialogSet.add(this);
 
-        // const dialogContext = await dialogSet.createContext(turnContext);
-        // const results = await dialogContext.continueDialog();
-        // if (results.status === DialogTurnStatus.empty) {
-        //     await dialogContext.beginDialog(this.id);
-        // }
+    async run(context, next) {
 
         await context.sendActivity("HELP MENU:");
         await context.sendActivity("- For a giphy '@giphy + subject giphy'."); 
@@ -266,7 +252,6 @@ class MainDialog {
                 running = false;
             }
         }
-        
     }
 
     async graphEvents(context,next){
@@ -340,7 +325,6 @@ class MainDialog {
                 running = false;
             }
         }
-        
     }
 
     async graphUser(context,next){
