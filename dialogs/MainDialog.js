@@ -170,8 +170,8 @@ class MainDialog {
 
 
         while(running){
-           await context.sendActivity(access_tokenGraph);
-            if(access_tokenGraph != "Getting Data"){
+           await context.sendActivity("getting data");
+            if(displayName != "..."){
                // await context.sendActivity(access_tokenGraph);
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
@@ -221,9 +221,9 @@ class MainDialog {
                             console.log("graphcall")
                             console.log(info);
                             console.log(info.value[0].displayName);
-                            console.log(info.value[0].mail);
+                            console.log(info.value[0].userPrincipalName);
                             displayName = info.value[0].displayName;
-                            mail = info.value[0].mail;
+                            mail = info.value[0].userPrincipalName;
 
                         } else{
                             console.log("else loop");
@@ -245,8 +245,8 @@ class MainDialog {
 
 
         while(running){
-           await context.sendActivity(access_tokenGraph);
-            if(access_tokenGraph != "Getting Data"){
+          await context.sendActivity("getting data");
+            if(displayName != "..."){
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
