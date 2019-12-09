@@ -44,6 +44,9 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@quote")){    
                 await this.dialog.quote(context,this.dialogState);
 
+            } else if(context.activity.text.includes("@wheater")){    
+                await this.dialog.weather(context,this.dialogState);
+
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
