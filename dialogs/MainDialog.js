@@ -73,8 +73,11 @@ class MainDialog {
             }
         });
 
-        while(running){
+        var count = 0;
+
+        while(running && count < 10){
             await context.sendActivity("getting info");
+            count ++
            
             if(definition != "..."){
 
