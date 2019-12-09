@@ -1,6 +1,7 @@
 const { MessageFactory, CardFactory,TurnContext,ActivityHandler } = require('botbuilder');
 
 const request = require("request");
+var Owlbot = require('owlbot-js');
 
 class MainDialog {
 
@@ -46,6 +47,48 @@ class MainDialog {
         var quote = myJson.content;
 
         await context.sendActivity(quote);
+    }
+
+    async explain(context, next){
+
+        var command = context.activity.text;
+        var input = command.replace("@explain ", "");
+        console.log(input);
+
+        var client = Owlbot('c98544b33ad132bab67c72ed90b96b741c942277');
+        var definition = '...';
+        var image = '...';
+        var running = true;
+ 
+        client.define(input).then(function(result){
+            console.log(result);  
+            definition = result.definitions[0].definition;
+            image = result.definitions[0].image_url;
+            console.log(definition);
+            console.log(image);
+
+            return {
+                definition: definition,
+                image: image
+            }
+        });
+
+        while(running){
+            await context.sendActivity("getting info");
+           
+            if(definition != "..."){
+
+                var card = CardFactory.heroCard(
+                    '',
+                    [image],
+                );
+
+                const message = MessageFactory.attachment(card);
+                await context.sendActivity(message);
+                await context.sendActivity(definition);
+                running = false;
+            } 
+        }
     }
 
     async weather(context, next){
