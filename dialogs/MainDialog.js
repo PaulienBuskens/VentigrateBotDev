@@ -263,14 +263,6 @@ class MainDialog {
                 running = false;
             } 
         }
-
-        await adminNext(displayName,mail);
-        
-    }
-
-    async adminNext(){
-        await context.sendActivity(displayName);
-        await context.sendActivity(mail);
     }
 
     async graphMe(context,next){
