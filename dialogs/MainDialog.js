@@ -17,6 +17,8 @@ class MainDialog {
         await context.sendActivity("- For a random quote '@quote'.");
         await context.sendActivity("- For the wheater '@wheater + name city'.");
         await context.sendActivity("- For the info '@explain + input'.");
+        await context.sendActivity("- For a joke '@joke'.");
+        await context.sendActivity("- If you are bored '@bored'.");
     }
 
     async giphy(context, next){
@@ -41,13 +43,40 @@ class MainDialog {
 
     async quote(context, next){
 
-        
         const response = await fetch('https://api.quotable.io/random');
         const myJson = await response.json();
 
         var quote = myJson.content;
 
         await context.sendActivity(quote);
+    }
+
+    async bored(context, next){
+
+        const response = await fetch('http://www.boredapi.com/api/activity/');
+        const myJson = await response.json();
+
+        var activity = myJson.activity;
+
+        await context.sendActivity(activity);
+    }
+    
+
+    async joke(context, next){
+
+        const response = await fetch('https://sv443.net/jokeapi/category/any?');
+        const myJson = await response.json();
+
+        if(myJson.type == "single"){
+            var joke = myJson.joke;
+            await context.sendActivity(joke);
+        } else{
+            var jokeSetup = myJson.setup;
+            var jokeDelivery = myJson.delivery;
+            await context.sendActivity(jokeSetup);
+            await context.sendActivity(jokeDelivery);
+        }
+        
     }
 
     async explain(context, next){
