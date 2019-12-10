@@ -7,7 +7,6 @@ class MainDialog {
 
 
     async run(context, next) {
-
         await context.sendActivity("HELP MENU:");
         await context.sendActivity("- For a giphy '@giphy + subject giphy'."); 
         await context.sendActivity("- For the graph token '@graphToken'. ");
@@ -143,7 +142,6 @@ class MainDialog {
 
         const description = myJson.weather[0].description;
 
-
         await context.sendActivity(Math.round(newTemp * 100) / 100 + " °C");
         await context.sendActivity(description);
     }
@@ -174,7 +172,6 @@ class MainDialog {
                     console.log("Access Token=" + parsedBody.access_token);  
 
                     access_tokenGraph = parsedBody.access_token;
-
 
                     var options = {
                         url: 'https://graph.microsoft.com/v1.0/users?$top=1',
@@ -216,7 +213,6 @@ class MainDialog {
                 running = false;
             }
         }
-        
     }
 
     async graphAdmin(context,next){
@@ -244,7 +240,6 @@ class MainDialog {
                     console.log("Access Token=" + parsedBody.access_token);  
 
                     access_tokenGraph = parsedBody.access_token;
-
 
                     var options = {
                         url: 'https://graph.microsoft.com/v1.0/users?$top=1',
@@ -320,7 +315,6 @@ class MainDialog {
 
                     access_tokenGraph = parsedBody.access_token;
 
-
                     var options = {
                         url: "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Paulien Buskens'",
                         headers: {
@@ -394,7 +388,6 @@ class MainDialog {
 
                     access_tokenGraph = parsedBody.access_token;
 
-
                     var options = {
                         url: "https://graph.microsoft.com/v1.0/users/paulien@ventigratedev.onmicrosoft.com/events",
                         headers: {
@@ -467,7 +460,6 @@ class MainDialog {
                     //console.log("Access Token=" + parsedBody.access_token);  
 
                     access_tokenGraph = parsedBody.access_token;
-
 
                     var options = {
                         url: "https://graph.microsoft.com/v1.0/me",
