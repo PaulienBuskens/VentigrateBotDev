@@ -64,7 +64,7 @@ class MainDialog {
 
     async joke(context, next){
 
-        const response = await fetch('https://sv443.net/jokeapi/category/any?');
+        const response = await fetch('https://sv443.net/jokeapi/category/programming');
         const myJson = await response.json();
 
         if(myJson.type == "single"){
