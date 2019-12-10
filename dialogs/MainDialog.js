@@ -91,7 +91,9 @@ class MainDialog {
                 await context.sendActivity(message);
                 await context.sendActivity(definition);
                 running = false;
-            } 
+            } else if (count == 9){
+                await context.sendActivity("Nothing found");
+            }
         }
     }
 
@@ -250,17 +252,25 @@ class MainDialog {
             }
         });
 
-
-        while(running){
+        var count = 0;
+        while(running && count < 10){
           // await context.sendActivity("getting data");
-           
+           count ++;
+           console.log("running");
             if(displayName != "..."){
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
                 running = false;
             } 
         }
+
+        await adminNext(displayName,mail);
         
+    }
+
+    async adminNext(){
+        await context.sendActivity(displayName);
+        await context.sendActivity(mail);
     }
 
     async graphMe(context,next){
@@ -325,9 +335,10 @@ class MainDialog {
             }
         });
 
-
-        while(running){
+        var count = 0;
+        while(running && count < 10){
           await context.sendActivity("getting data");
+          count ++;
             if(displayName != "..."){
                 await context.sendActivity(displayName);
                 await context.sendActivity(mail);
@@ -398,9 +409,10 @@ class MainDialog {
             }
         });
 
-
-        while(running){
-           await context.sendActivity(access_tokenGraph);
+        var count = 0;
+        while(running && count < 10){
+            count ++;
+            await context.sendActivity(access_tokenGraph);
             if(access_tokenGraph != "Getting Data"){
                 await context.sendActivity(subject);
                 await context.sendActivity(dateTime);
