@@ -254,7 +254,7 @@ class MainDialog {
 
         var count = 0;
         while(running && count < 10){
-          // await context.sendActivity("getting data");
+           await context.sendActivity("getting data");
            count ++;
            console.log("running");
             if(displayName != "..."){
