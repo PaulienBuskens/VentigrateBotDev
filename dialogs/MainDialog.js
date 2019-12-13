@@ -170,8 +170,6 @@ class MainDialog {
                     console.log("Access Token=" + parsedBody.access_token);  
 
                     access_tokenGraph = parsedBody.access_token;
- 
-                  //  request(options, callback);
 
                     return {
                         access_tokenGraph: access_tokenGraph
