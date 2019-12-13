@@ -56,9 +56,6 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@bored")){    
                 await this.dialog.bored(context,this.dialogState);
 
-            } else if(context.activity.text.includes("@graphTest")){    
-                await this.dialog.graphTest(context,this.dialogState);
-
             }else{
                 await this.dialog.run(context, this.dialogState);
             }
