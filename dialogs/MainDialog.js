@@ -170,30 +170,8 @@ class MainDialog {
                     console.log("Access Token=" + parsedBody.access_token);  
 
                     access_tokenGraph = parsedBody.access_token;
-
-                    var options = {
-                        url: 'https://graph.microsoft.com/v1.0/users?$top=1',
-                        headers: {
-                            Authorization : access_tokenGraph
-                        }
-                    };
  
-                    function callback(error, response, body) {
-                        if (!error && response.statusCode == 200) {
-                            var info = JSON.parse(body);
-                            console.log("graphcall")
-                            console.log(info);
-                            console.log(info.value[0].displayName);
-                            console.log(info.value[0].mail);
-                            displayName = info.value[0].displayName;
-                            mail = info.value[0].mail;
-                        } else{
-                            console.log("else loop");
-                            console.log(body);
-                        }
-                    }
- 
-                    request(options, callback);
+                  //  request(options, callback);
 
                     return {
                         access_tokenGraph: access_tokenGraph
