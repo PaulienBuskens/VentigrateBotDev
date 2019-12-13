@@ -50,8 +50,11 @@ class DialogBot extends ActivityHandler {
             } else if(context.activity.text.includes("@explain")){    
                 await this.dialog.explain(context,this.dialogState);
 
-            } else if(context.activity.text.includes("@joke")){    
-                await this.dialog.joke(context,this.dialogState);
+            } else if(context.activity.text.includes("@Pjoke")){    
+                await this.dialog.Pjoke(context,this.dialogState);
+
+            } else if(context.activity.text.includes("@AllJokes")){    
+                await this.dialog.AllJokes(context,this.dialogState);
 
             } else if(context.activity.text.includes("@bored")){    
                 await this.dialog.bored(context,this.dialogState);

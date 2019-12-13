@@ -15,7 +15,8 @@ class MainDialog {
         await context.sendActivity("- For a random quote '@quote'.");
         await context.sendActivity("- For the wheater '@wheater + name city'.");
         await context.sendActivity("- For info about something '@explain + input'.");
-        await context.sendActivity("- For a joke '@joke'.");
+        await context.sendActivity("- For a Programming joke '@Pjoke'.");
+        await context.sendActivity("- For a totally random joke '@AllJokes'.");
         await context.sendActivity("- If you are bored '@bored'.");
     }
 
@@ -59,7 +60,24 @@ class MainDialog {
         await context.sendActivity(activity);
     }
 
-    async joke(context, next){
+    async Pjoke(context, next){
+
+        const response = await fetch('https://sv443.net/jokeapi/category/programming');
+        const myJson = await response.json();
+
+        if(myJson.type == "single"){
+            var joke = myJson.joke;
+            await context.sendActivity(joke);
+        } else{
+            var jokeSetup = myJson.setup;
+            var jokeDelivery = myJson.delivery;
+            await context.sendActivity(jokeSetup);
+            await context.sendActivity(jokeDelivery);
+        }
+        
+    }
+
+    async AllJokes(context, next){
 
         const response = await fetch('https://sv443.net/jokeapi/category/any');
         const myJson = await response.json();
@@ -179,7 +197,7 @@ class MainDialog {
             }
         });
 
-
+     
         while(running){
             await context.sendActivity(access_tokenGraph);
             if(access_tokenGraph != "Getting Token"){
