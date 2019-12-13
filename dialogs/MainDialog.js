@@ -5,7 +5,6 @@ var Owlbot = require('owlbot-js');
 
 class MainDialog {
 
-
     async run(context, next) {
         await context.sendActivity("HELP MENU:");
         await context.sendActivity("- For a giphy '@giphy + subject giphy'."); 
@@ -15,7 +14,7 @@ class MainDialog {
         await context.sendActivity("- For the your upcomming events '@graphEvents'.");
         await context.sendActivity("- For a random quote '@quote'.");
         await context.sendActivity("- For the wheater '@wheater + name city'.");
-        await context.sendActivity("- For the info '@explain + input'.");
+        await context.sendActivity("- For info about something '@explain + input'.");
         await context.sendActivity("- For a joke '@joke'.");
         await context.sendActivity("- If you are bored '@bored'.");
     }
@@ -59,11 +58,10 @@ class MainDialog {
 
         await context.sendActivity(activity);
     }
-    
 
     async joke(context, next){
 
-        const response = await fetch('https://sv443.net/jokeapi/category/programming');
+        const response = await fetch('https://sv443.net/jokeapi/category/any');
         const myJson = await response.json();
 
         if(myJson.type == "single"){
@@ -317,6 +315,79 @@ class MainDialog {
 
                     var options = {
                         url: "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Paulien Buskens'",
+                        headers: {
+                            Authorization : access_tokenGraph
+                        }
+                    };
+ 
+                    function callback(error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var info = JSON.parse(body);
+                            console.log("graphcall")
+                            console.log(info);
+                            console.log(info.value[0].displayName);
+                            console.log(info.value[0].userPrincipalName);
+                            displayName = info.value[0].displayName;
+                            mail = info.value[0].userPrincipalName;
+
+                        } else{
+                            console.log("else loop");
+                            console.log(body);
+                        }
+                    }
+ 
+                    request(options, callback);
+
+                    return {
+                        access_tokenGraph: access_tokenGraph,
+                        displayName: displayName,
+                        mail: mail
+                    }
+
+                }
+            }
+        });
+
+        var count = 0;
+        while(running && count < 10){
+          await context.sendActivity("getting data");
+          count ++;
+            if(displayName != "..."){
+                await context.sendActivity(displayName);
+                await context.sendActivity(mail);
+                running = false;
+            }
+        }
+    }
+
+    async graphTest(context,next){
+        const endpoint = "https://login.microsoftonline.com/fc699687-50ce-4e72-b09d-0f2d9c7b725c/oauth2/token";
+        const requestParams = {
+            grant_type: "client_credentials",
+            client_id: "e414d507-6c1d-4b7c-baa4-b0b8834e6d9c",
+            client_secret: "+_#7mr=h:MTNo!a2YaR%0Pi8bD89PxT",
+            resource: "https://graph.microsoft.com"
+        };
+        var access_tokenGraph = "Getting Data";
+        var displayName = "...";
+        var mail = "...";
+        var running = true
+
+        request.post({ url:endpoint, form: requestParams }, function (err, response, body) {
+            if (err) {
+                console.log("error");
+            }else {
+                console.log("Body=" + body);
+                let parsedBody = JSON.parse(body);         
+                if (parsedBody.error_description) {
+                    console.log("Error=" + parsedBody.error_description);
+                } else {
+                    console.log("Access Token=" + parsedBody.access_token);  
+
+                    access_tokenGraph = parsedBody.access_token;
+
+                    var options = {
+                        url: "https://graph.microsoft.com/v1.0/me",
                         headers: {
                             Authorization : access_tokenGraph
                         }
