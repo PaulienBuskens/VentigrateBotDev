@@ -49,12 +49,6 @@ class MainDialog {
 
         await context.sendActivity(quote);
 
-        const teamDetails = await TeamsInfo.getTeamDetails(context);
-        if (teamDetails) {
-            await turnContext.sendActivity(`The group ID is: ${teamDetails.aadGroupId}`);
-        } else {
-            await turnContext.sendActivity('This message did not come from a channel in a team.');
-        }
     }
 
     async bored(context, next){
