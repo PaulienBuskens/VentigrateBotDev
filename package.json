@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@microsoft/microsoft-graph-client": "^2.0.0",
+        "@microsoft/teams-js": "^1.5.2",
         "applicationinsights": "^1.6.0",
         "botbuilder": "~4.6.0",
         "botbuilder-dialogs": "^4.6.2",
@@ -27,12 +28,14 @@
     },
     "devDependencies": {
         "@microsoft/microsoft-graph-types": "^1.12.0",
+        "@types/node": "^12.12.20",
         "eslint": "^6.6.0",
         "eslint-config-standard": "^14.1.0",
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-node": "^10.0.0",
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
-        "nodemon": "~1.19.4"
+        "nodemon": "~1.19.4",
+        "typescript": "^3.7.3"
     }
 }
